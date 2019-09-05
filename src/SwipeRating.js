@@ -96,25 +96,25 @@ export default class SwipeRating extends Component {
     this.setCurrentRating(this.props.startingValue);
   }
 
-  // componentWillReceiveProps(nextProps) {
-  //   if (nextProps.startingValue !== this.props.startingValue) {
-  //     this.setCurrentRating(nextProps.startingValue);
-  //   }
-  // }
-
-  static getDerivedStateFromProps(nextProps, prevState){
-    if (nextProps.startingValue !== prevState.startingValue){
-      return { startingValue: nextProps.startingValue };
-   }
-   else return null;
- }
-
- componentDidUpdate(prevProps, prevState) {
-  if (prevState.startingValue !== this.state.startingValue) {
-    // Thục hiện update state
-    this.setCurrentRating(this.state.startingValue);
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.startingValue !== this.props.startingValue) {
+      this.setCurrentRating(nextProps.startingValue);
+    }
   }
-}
+
+//   static getDerivedStateFromProps(nextProps, prevState){
+//     if (nextProps.startingValue !== prevState.startingValue){
+//       return { startingValue: nextProps.startingValue };
+//    }
+//    else return null;
+//  }
+
+//  componentDidUpdate(prevProps, prevState) {
+//   if (prevState.startingValue !== this.state.startingValue) {
+//     // Thục hiện update state
+//     this.setCurrentRating(this.state.startingValue);
+//   }
+// }
 
   getPrimaryViewStyle() {
     const { position } = this.state;
