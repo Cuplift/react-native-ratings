@@ -33,24 +33,24 @@ export default class TapRating extends Component {
     this.setState({ position: defaultRating })
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.defaultRating !== this.props.defaultRating) {
-      this.setState({ position: nextProps.defaultRating })
-    }
+  // componentWillReceiveProps(nextProps) {
+  //   if (nextProps.defaultRating !== this.props.defaultRating) {
+  //     this.setState({ position: nextProps.defaultRating })
+  //   }
+  // }
+
+  static getDerivedStateFromProps(nextProps, prevState){
+    if (nextProps.defaultRating !== prevState.defaultRating){
+      return { defaultRating: nextProps.defaultRating };
+   }
+   else return null;
+ }
+
+ componentDidUpdate(prevProps, prevState) {
+  if (prevState.defaultRating !== this.state.defaultRating) {
+    this.setState({ position: this.state.defaultRating })
   }
-
-//   static getDerivedStateFromProps(nextProps, prevState){
-//     if (nextProps.defaultRating !== prevState.defaultRating){
-//       return { defaultRating: nextProps.defaultRating };
-//    }
-//    else return null;
-//  }
-
-//  componentDidUpdate(prevProps, prevState) {
-//   if (prevState.defaultRating !== this.state.defaultRating) {
-//     this.setState({ position: this.state.defaultRating })
-//   }
-// }
+}
 
   renderStars(rating_array) {
     return _.map(rating_array, (star, index) => {
