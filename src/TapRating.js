@@ -22,7 +22,8 @@ export default class TapRating extends Component {
     super()
 
     this.state = {
-      position: 5
+      position: 5,
+      defaultRating: 0
     }
   }
 
@@ -39,7 +40,7 @@ export default class TapRating extends Component {
   // }
 
   static getDerivedStateFromProps(nextProps, prevState){
-    if (nextProps.defaultRating !== this.props.defaultRating){
+    if (nextProps.defaultRating !== prevState.defaultRating){
       return { defaultRating: nextProps.defaultRating };
    }
    else return null;

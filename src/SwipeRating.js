@@ -46,8 +46,7 @@ export default class SwipeRating extends Component {
     ratingCount: 5,
     imageSize: 40,
     onFinishRating: () => console.log('Attach a onFinishRating function here.'),
-    minValue: 0,
-    startingValue:1
+    minValue: 0
   };
 
   constructor(props) {
@@ -79,7 +78,7 @@ export default class SwipeRating extends Component {
       }
     });
 
-    this.state = { panResponder, position, display: false };
+    this.state = { panResponder, position, display: false , startingValue: 0};
   }
 
   async componentDidMount() {
@@ -104,7 +103,7 @@ export default class SwipeRating extends Component {
   // }
 
   static getDerivedStateFromProps(nextProps, prevState){
-    if (nextProps.startingValue !== this.props.startingValue || 1){
+    if (nextProps.startingValue !== prevState.startingValue){
       return { startingValue: nextProps.startingValue };
    }
    else return null;
