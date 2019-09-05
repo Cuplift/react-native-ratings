@@ -46,7 +46,8 @@ export default class SwipeRating extends Component {
     ratingCount: 5,
     imageSize: 40,
     onFinishRating: () => console.log('Attach a onFinishRating function here.'),
-    minValue: 0
+    minValue: 0,
+    startingValue:1
   };
 
   constructor(props) {
