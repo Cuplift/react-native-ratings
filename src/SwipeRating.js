@@ -104,7 +104,7 @@ export default class SwipeRating extends Component {
   // }
 
   static getDerivedStateFromProps(nextProps, prevState){
-    if (nextProps.startingValue !== this.props.startingValue){
+    if (nextProps.startingValue !== this.props.startingValue || 1){
       return { startingValue: nextProps.startingValue };
    }
    else return null;
