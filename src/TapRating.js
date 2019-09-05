@@ -48,6 +48,7 @@ export default class TapRating extends Component {
 
  componentDidUpdate(prevProps, prevState) {
   if (prevState.defaultRating !== this.state.defaultRating) {
+    alert('tap')
     this.setState({ position: this.state.defaultRating })
   }
 }
