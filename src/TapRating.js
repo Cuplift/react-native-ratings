@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
   ratingContainer: {
     backgroundColor: 'transparent',
     flexDirection: 'column',
-    //alignItems: 'center',
+    alignItems: 'center',
     justifyContent: 'center',
   },
   reviewText: {
@@ -101,6 +101,6 @@ const styles = StyleSheet.create({
   starContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
   }
 });
