@@ -62,12 +62,14 @@ export default class TapRating extends Component {
 
   render() {
     const { position } = this.state
-    const { count, reviews, showRating, reviewColor, reviewSize } = this.props
+    const { count, reviews, showRating, reviewColor, reviewSize ,icon ,iconSelected} = this.props
     const rating_array = []
 
     _.times(count, index => {
       rating_array.push(
         <Star
+          icon={icon}
+          iconSelected={iconSelected}
           key={index}
           position={index + 1}
           starSelectedInPosition={this.starSelectedInPosition.bind(this)}
