@@ -62,7 +62,7 @@ export default class TapRating extends Component {
 
   render() {
     const { position } = this.state
-    const { count, reviews, showRating, reviewColor, reviewSize ,icon ,iconSelected} = this.props
+    const { count, style, reviews, showRating, reviewColor, reviewSize ,icon ,iconSelected} = this.props
     const rating_array = []
 
     _.times(count, index => {
@@ -81,7 +81,7 @@ export default class TapRating extends Component {
 
     return (
       <View style={styles.ratingContainer}>
-        <View style={styles.starContainer}>
+        <View style={[styles.starContainer,style]}>
           {this.renderStars(rating_array)}
         </View>
       </View>
