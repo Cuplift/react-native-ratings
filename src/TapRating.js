@@ -10,7 +10,7 @@ import Star from './components/Star'
 export default class TapRating extends Component {
   static defaultProps = {
     defaultRating: 3,
-    reviews: ["Terrible", "Bad", "Okay", "Good", "Great"],
+    reviews: [],
     count: 5,
     onFinishRating: () => console.log('Rating selected. Attach a function here.'),
     showRating: true,
@@ -32,12 +32,6 @@ export default class TapRating extends Component {
 
     this.setState({ position: defaultRating })
   }
-
-  // componentWillReceiveProps(nextProps) {
-  //   if (nextProps.defaultRating !== this.props.defaultRating) {
-  //     this.setState({ position: nextProps.defaultRating })
-  //   }
-  // }
 
   static getDerivedStateFromProps(nextProps, prevState){
     if (nextProps.defaultRating !== prevState.defaultRating){
@@ -85,11 +79,6 @@ export default class TapRating extends Component {
 
     return (
       <View style={styles.ratingContainer}>
-        { showRating &&
-          <Text style={[styles.reviewText, {fontSize: reviewSize, color: reviewColor}]}>
-            {reviews[position - 1]}
-          </Text>
-        }
         <View style={styles.starContainer}>
           {this.renderStars(rating_array)}
         </View>
