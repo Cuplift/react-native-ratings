@@ -10,12 +10,18 @@ import {
 
 // RATING IMAGES WITH STATIC BACKGROUND COLOR (white)
 const STAR_IMAGE = require('./images/star.png');
+const STAR_IMAGE_GREEN = require('./images/stargreen.png');
 const HEART_IMAGE = require('./images/heart.png');
 const ROCKET_IMAGE = require('./images/rocket.png');
 const BELL_IMAGE = require('./images/bell.png');
 
 const TYPES = {
   star: {
+    source: STAR_IMAGE,
+    color: 'black',
+    backgroundColor: 'white'
+  },
+  stargreen: {
     source: STAR_IMAGE,
     color: '#d0dc00',
     backgroundColor: 'white'
