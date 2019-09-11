@@ -22,7 +22,7 @@ const TYPES = {
     backgroundColor: 'white'
   },
   stargreen: {
-    source: STAR_IMAGE,
+    source: STAR_IMAGE_GREEN,
     color: '#d0dc00',
     backgroundColor: 'white'
   },
