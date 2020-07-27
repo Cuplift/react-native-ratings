@@ -1,11 +1,10 @@
-import times from 'lodash/times';
-
 import React, { Component } from 'react';
+import times from 'lodash/times';
 import PropTypes from 'prop-types';
 
-import { 
-  View, Text, Animated, PanResponder, Image, 
-  StyleSheet, Platform, ViewPropTypes
+import {
+  View, Text, Animated, PanResponder, Image,
+  StyleSheet, Platform
 } from 'react-native';
 
 // RATING IMAGES WITH STATIC BACKGROUND COLOR (white)
@@ -50,8 +49,8 @@ export default class SwipeRating extends Component {
     ratingColor: '#f1c40f',
     ratingBackgroundColor: 'white',
     ratingCount: 5,
+    showReadOnlyText: true,
     imageSize: 40,
-    onFinishRating: () => console.log('Attach a onFinishRating function here.'),
     minValue: 0
   };
 
@@ -70,7 +69,9 @@ export default class SwipeRating extends Component {
       onPanResponderMove: (event, gesture) => {
         const newPosition = new Animated.ValueXY();
         newPosition.setValue({ x: gesture.dx, y: 0 });
-        this.setState({ position: newPosition, value: gesture.dx });
+        if (this.state.isComponentMounted) {
+          this.setState({position: newPosition, value: gesture.dx});
+        }
       },
       onPanResponderRelease: event => {
         const rating = this.getCurrentRating(this.state.value);
@@ -79,12 +80,12 @@ export default class SwipeRating extends Component {
             // 'round up' to the nearest rating image
             this.setCurrentRating(rating);
           }
-          onFinishRating(rating);
+          if (typeof onFinishRating === 'function') onFinishRating(rating);
         }
       }
     });
 
-    this.state = { panResponder, position, display: false , startingValue: 0};
+    this.state = { panResponder, position, display: false , startingValue: 0, isComponentMounted: false };
   }
 
   async componentDidMount() {
@@ -94,7 +95,7 @@ export default class SwipeRating extends Component {
       const ROCKET_IMAGE = await require('./images/rocket.png');
       const BELL_IMAGE = await require('./images/bell.png');
 
-      this.setState({ display: true })
+      this.setState({ display: true, isComponentMounted: true });
     } catch(err) {
       console.log(err)
     }
@@ -102,25 +103,11 @@ export default class SwipeRating extends Component {
     this.setCurrentRating(this.props.startingValue);
   }
 
-  // componentWillReceiveProps(nextProps) {
-  //   if (nextProps.startingValue !== this.props.startingValue) {
-  //     this.setCurrentRating(nextProps.startingValue);
-  //   }
-  // }
-
-  static getDerivedStateFromProps(nextProps, prevState){
-    if (nextProps.startingValue !== prevState.startingValue){
-      return { startingValue: nextProps.startingValue };
-   }
-   else return null;
- }
-
- componentDidUpdate(prevProps, prevState) {
-  if (prevState.startingValue !== this.state.startingValue) {
-    // Thục hiện update state
-    this.setCurrentRating(this.state.startingValue);
+  componentDidUpdate(prevProps) {
+    if (this.props.startingValue !== prevProps.startingValue) {
+      this.setCurrentRating(this.props.startingValue);
+    }
   }
-}
 
   getPrimaryViewStyle() {
     const { position } = this.state;
@@ -222,11 +209,13 @@ export default class SwipeRating extends Component {
 
     const newPosition = new Animated.ValueXY();
     newPosition.setValue({ x: value, y: 0 });
-    this.setState({ position: newPosition, value });
+    if (this.state.isComponentMounted) {
+      this.setState({position: newPosition, value});
+    }
   }
 
   displayCurrentRating() {
-    const { ratingCount, type, readonly, ratingTextColor } = this.props;
+    const { ratingCount, type, readonly, showReadOnlyText, ratingTextColor } = this.props;
     const color = ratingTextColor || TYPES[type].color;
 
     return (
@@ -236,7 +225,7 @@ export default class SwipeRating extends Component {
           <Text style={[styles.currentRatingText, { color }]}>{this.getCurrentRating(this.state.value)}</Text>
           <Text style={[styles.maxRatingText, { color }]}>/{ratingCount}</Text>
         </View>
-        <View>{readonly && <Text style={[styles.readonlyLabel, { color }]}>(readonly)</Text>}</View>
+        <View>{readonly && showReadOnlyText && <Text style={[styles.readonlyLabel, { color }]}>(readonly)</Text>}</View>
       </View>
     );
   }
@@ -268,6 +257,11 @@ export default class SwipeRating extends Component {
       null
     );
   }
+
+  componentWillUnmount() {
+    this.setState({ isComponentMounted: false });
+  }
+
 }
 
 const styles = StyleSheet.create({
@@ -340,7 +334,7 @@ const fractionsType = (props, propName, componentName) => {
 
 SwipeRating.propTypes = {
   type: PropTypes.string,
-  ratingImage: Image.propTypes.source,
+  ratingImage: PropTypes.node,
   ratingColor: PropTypes.string,
   ratingBackgroundColor: PropTypes.string,
   ratingCount: PropTypes.number,
@@ -349,8 +343,9 @@ SwipeRating.propTypes = {
   onStartRating: PropTypes.func,
   onFinishRating: PropTypes.func,
   showRating: PropTypes.bool,
-  style: ViewPropTypes.style,
+  style: PropTypes.object,
   readonly: PropTypes.bool,
+  showReadOnlyText: PropTypes.bool,
   startingValue: PropTypes.number,
   fractions: fractionsType,
   minValue: PropTypes.number

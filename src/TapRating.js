@@ -12,11 +12,22 @@ export default class TapRating extends Component {
     defaultRating: 3,
     reviews: [],
     count: 5,
-    onFinishRating: () => console.log('Rating selected. Attach a function here.'),
     showRating: true,
     reviewColor: 'rgba(230, 196, 46, 1)',
     reviewSize: 25
   };
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    const { defaultRating } = nextProps;
+
+    if (defaultRating !== prevState.defaultRating) {
+      return {
+        position: defaultRating,
+        defaultRating
+      }
+    }
+    return null;
+  }
 
   constructor() {
     super()
@@ -33,19 +44,6 @@ export default class TapRating extends Component {
     this.setState({ position: defaultRating })
   }
 
-  static getDerivedStateFromProps(nextProps, prevState){
-    if (nextProps.defaultRating !== prevState.defaultRating){
-      return { defaultRating: nextProps.defaultRating };
-   }
-   else return null;
- }
-
- componentDidUpdate(prevProps, prevState) {
-  if (prevState.defaultRating !== this.state.defaultRating) {
-    this.setState({ position: this.state.defaultRating })
-  }
-}
-
   renderStars(rating_array) {
     return _.map(rating_array, (star, index) => {
       return star
@@ -55,7 +53,7 @@ export default class TapRating extends Component {
   starSelectedInPosition(position) {
     const { onFinishRating } = this.props
 
-    onFinishRating(position);
+    if (typeof onFinishRating === 'function') onFinishRating(position);
 
     this.setState({ position: position })
   }
@@ -64,6 +62,11 @@ export default class TapRating extends Component {
     const { position } = this.state
     const { count, style, reviews, showRating, reviewColor, reviewSize ,icon ,iconSelected} = this.props
     const rating_array = []
+    const starContainerStyle = [styles.starContainer]
+
+    if (this.props.starContainerStyle) {
+        starContainerStyle.push(this.props.starContainerStyle);
+    }
 
     _.times(count, index => {
       rating_array.push(
